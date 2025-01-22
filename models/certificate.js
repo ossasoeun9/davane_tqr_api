@@ -21,6 +21,11 @@ module.exports = (sequelize, DataTypes) => {
   }
   Certificate.init(
     {
+      id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey: true,
+      },
       title: DataTypes.STRING,
       issuedDate: DataTypes.DATE,
       expireDate: DataTypes.DATE,

@@ -1,9 +1,7 @@
-const pool = require("../config-db/database.js");
+
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const { User, Store } = require("../models/index.js");
-const { use } = require("../routes/auth-route.js");
-const e = require("express");
 
 const login = async (req, res) => {
   try {

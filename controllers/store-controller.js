@@ -1,5 +1,6 @@
 const { Store, User } = require("../models/index.js");
 const jwt = require("jsonwebtoken");
+const uploadBuffer = require("../core/gcp/upload-buffer.js");
 
 const createStore = async (req, res) => {
   try {
@@ -16,7 +17,7 @@ const createStore = async (req, res) => {
       return res.status(400).json({ message: "Name and address are required" });
     }
 
-    await Store.create({
+    const response = await Store.create({
       name,
       address,
       phoneNumber,
@@ -24,6 +25,23 @@ const createStore = async (req, res) => {
       facebook,
       userId: req.user.id,
     });
+
+    const { dataValues } = response;
+    if (!dataValues) {
+      return res.status(500).json({ message: "Failed to create store" });
+    }
+
+    const { photo } = req.files;
+    if (photo) {
+      const ext = photo[0].originalname.split(".").pop();
+      const path = `stores/${dataValues.id}.${ext}`;
+      const isUploaded = await uploadBuffer(
+        photo[0].buffer,
+        photo[0].mimetype,
+        path
+      );
+      await Store.update({ photo: path }, { where: { id: dataValues.id } });
+    }
 
     const user = await User.findByPk(req.user.id, {
       include: {
@@ -62,10 +80,7 @@ const getStoreById = async (req, res) => {
 
 const editStore = async (req, res) => {
   try {
-    const { store } = req.user;
-    if (store === null) {
-      return res.status(404).json({ message: "Store not found" });
-    }
+    const { store } = req.user
     const { name, address, phoneNumber, email, facebook } = req.body;
 
     const data = { phoneNumber, email, facebook };
@@ -76,9 +91,24 @@ const editStore = async (req, res) => {
       data.address = address;
     }
 
-    await Store.update(data, { where: { id: store.id } });
+    const { photo } = req.files;
+    if (photo) {
+      const ext = photo[0].originalname.split(".").pop();
+      const path = `stores/${store.id}.${ext}`;
+      const isUploaded = await uploadBuffer(
+        photo[0].buffer,
+        photo[0].mimetype,
+        path
+      );
+      if (isUploaded) {
+        data.photo = path
+      }
+    }
 
-    return res.status(200).json({ message: "Store updated successfully" });
+    await Store.update(data, { where: { id: store.id } });
+    
+    req.params.id = store.id
+    return await getStoreById(req, res)
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Internal server error" });

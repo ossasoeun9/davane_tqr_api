@@ -18,7 +18,7 @@ const login = async (req, res) => {
     const user = await User.findOne({
       where: {
         phoneNumber,
-        password: hashedPassword,
+        pswd: hashedPassword,
       },
       include: {
         model: Store,
@@ -33,7 +33,7 @@ const login = async (req, res) => {
         .json({ message: "Phone number or password is incorrect" });
     }
 
-    const accessToken = jwt.sign(user.toJSON(), process.env.JWT_SECRET, {algorithm: "HS256", expiresIn: "30d"});
+    const accessToken = jwt.sign(user.toJSON(), process.env.JWT_SECRET, {algorithm: "HS256"});
 
     return res.status(200).json({ accessToken, user });
   } catch (error) {
@@ -66,4 +66,23 @@ const verifyToken = (req, res, next) => {
   });
 }
 
-module.exports = { login, verifyToken };
+const verifyToken2 = (req, res, next) => {
+  var token = req.headers.authorization;
+  if (!token) {
+    return res.status(401).json({ message: "Token is required" });
+  }
+  token = token.replace("Bearer ", "");
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) {
+      return res.status(403).json({ message: err.message });
+    }
+    if (!user.store) {
+      return res.status(403).json({ message: "Please create store first." });
+    }
+    req.user = user;
+    next();
+  });
+}
+
+module.exports = { login, verifyToken, verifyToken2 };

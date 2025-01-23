@@ -11,6 +11,7 @@
   "author": "Ossa",
   "license": "ISC",
   "dependencies": {
+    "@google-cloud/storage": "^7.15.0",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "fs": "^0.0.1-security",

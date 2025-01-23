@@ -13,9 +13,9 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "storeId",
         as: "store",
       });
-      Certificate.hasOne(models.IssuingIstitution, {
-        foreignKey: "certificateId",
-        as: "issuingIstitution",
+      Certificate.belongsTo(models.User, {
+        foreignKey: "userId",
+        as: "user",
       });
     }
   }
@@ -27,9 +27,11 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
       },
       title: DataTypes.STRING,
+      IssuingIstitution: DataTypes.STRING,
       issuedDate: DataTypes.DATE,
       expireDate: DataTypes.DATE,
       photo: DataTypes.STRING,
+      note: DataTypes.STRING,
     },
     {
       sequelize,

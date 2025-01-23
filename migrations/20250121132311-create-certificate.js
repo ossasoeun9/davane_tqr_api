@@ -14,6 +14,9 @@ module.exports = {
         type: Sequelize.STRING(100),
         allowNull: false
       },
+      issuingIstitution: {
+        type: Sequelize.STRING(250)
+      },
       issuedDate: {
         type: Sequelize.DATE,
         allowNull: false

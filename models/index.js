@@ -38,16 +38,13 @@ Object.keys(db).forEach(modelName => {
 });
 
 db.sequelize = sequelize;
-db.Sequelize = Sequelize;
 
 db.User = require('./user.js')(sequelize, Sequelize.DataTypes);
 db.Store = require('./store.js')(sequelize, Sequelize.DataTypes);
 db.Certificate = require('./certificate.js')(sequelize, Sequelize.DataTypes);
-db.IssuingIstitution = require('./issuingistitution.js')(sequelize, Sequelize.DataTypes);
 
 db.User.associate(db);
 db.Store.associate(db);
 db.Certificate.associate(db);
-db.IssuingIstitution.associate(db);
 
 module.exports = db;

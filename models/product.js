@@ -20,19 +20,17 @@ module.exports = (sequelize, DataTypes) => {
       })
       Product.belongsTo(models.User, {
         foreignKey: "userId",
-        as: "User",
+        as: "user",
       }),
       Product.hasMany(models.QrCode, {
         foreignKey: "productId",
         as: "qrCodes"
       })
       Product.belongsToMany(models.Ingredient, {
-        through: models.ProuctHasIngredient,
-        as: "ingredients"
+        through: models.ProductHasIngredient,
       })
       Product.belongsToMany(models.Certificate, {
         through: models.ProductHasCertificate,
-        as: "certificates"
       })
     }
   }

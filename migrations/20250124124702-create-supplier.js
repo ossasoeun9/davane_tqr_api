@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Certificates', {
+    await queryInterface.createTable('Suppliers', {
       id: {
         allowNull: false,
         primaryKey: true,
@@ -10,29 +10,27 @@ module.exports = {
         defaultValue: Sequelize.UUIDV4,
         unique: true,
       },
-      title: {
-        type: Sequelize.STRING(100),
+      name: {
+        type: Sequelize.STRING(50),
         allowNull: false
       },
-      issuingIstitution: {
+      phoneNumber: {
+        type: Sequelize.STRING(15),
+        allowNull: false
+      },
+      type: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
+      address: {
         type: Sequelize.STRING(250)
       },
-      issuedDate: {
-        type: Sequelize.DATE,
-        allowNull: false
-      },
-      expireDate: {
-        type: Sequelize.DATE
-      },
-      photo: {
-        type: Sequelize.STRING(150)
-      },
       note: {
-        type: Sequelize.STRING(300)
+        type: Sequelize.STRING(500),
       },
       storeId: {
-        allowNull: false,
         type: Sequelize.UUID,
+        allowNull: false,
         references: {
           model: 'Stores',
           key: 'id'
@@ -59,6 +57,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Certificates');
+    await queryInterface.dropTable('Suppliers');
   }
 };

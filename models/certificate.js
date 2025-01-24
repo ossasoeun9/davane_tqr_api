@@ -17,6 +17,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "userId",
         as: "user",
       });
+      Certificate.belongsToMany(models.Product, {
+        through: models.ProductHasCertificate,
+        as: "products"
+      })
     }
   }
   Certificate.init(

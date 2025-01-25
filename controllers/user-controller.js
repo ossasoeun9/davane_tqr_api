@@ -34,7 +34,6 @@ const editProfile = async (req, res) => {
 
     const data = { lastName };
     if (photo) {
-      console.log(photo[0]);
       const ext = photo[0].originalname.split(".").pop();
       const path = `users/${id}.${ext}`;
       const isUploaded = await uploadBuffer(

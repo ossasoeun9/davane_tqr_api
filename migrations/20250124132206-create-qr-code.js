@@ -8,13 +8,15 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
-        unique: true,
       },
       createDate: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.fn('now')
       },
       expireDate: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        allowNull: false,
       },
       productId: {
         type: Sequelize.UUID,
@@ -31,6 +33,9 @@ module.exports = {
           model: 'Suppliers',
           key: 'id'
         }
+      },
+      note: {
+        type: Sequelize.STRING(400)
       },
       storeId: {
         type: Sequelize.UUID,

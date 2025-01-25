@@ -8,6 +8,7 @@ const getIngredients = async (req, res) => {
       attributes: {
         exclude: ["userId", "storeId", "createdAt", "updatedAt"],
       },
+      order: [["createdAt", "DESC"]],
     });
     if (!ingredients) {
       return res.status(404).json({ message: "Ingredient not found" });

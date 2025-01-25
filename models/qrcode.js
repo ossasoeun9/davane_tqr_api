@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       QrCode.belongsTo(models.User, {
         foreignKey: "userId",
-        as: "user"
+        as: "user",
       })
       QrCode.belongsTo(models.Store, {
         foreignKey: "storeId",

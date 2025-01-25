@@ -9,6 +9,7 @@ const getCategories = async (req, res) => {
       attributes: {
         exclude: ["userId", "storeId", "createdAt", "updatedAt"],
       },
+      order: [['createdAt', 'DESC']],
     });
     return res.status(200).json(categories);
   } catch (error) {

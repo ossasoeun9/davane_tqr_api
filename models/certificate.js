@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
         as: "user",
       });
       Certificate.belongsToMany(models.Product, {
-        through: models.ProductHasCertificate,
+        through: models.ProductCertificate,
         as: "products"
       })
     }

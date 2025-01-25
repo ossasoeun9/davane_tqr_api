@@ -18,7 +18,7 @@ module.exports = {
         type: Sequelize.STRING(80),
         allowNull: false,
       },
-      productId: {
+      extId: {
         type: Sequelize.STRING(50),
       },
       categoryId: {
@@ -40,7 +40,7 @@ module.exports = {
         allowNull: false,
       },
       price: {
-        type: Sequelize.DECIMAL,
+        type: Sequelize.DECIMAL(5),
         allowNull: false,
       },
       note: {

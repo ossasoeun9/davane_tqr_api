@@ -14,13 +14,17 @@ module.exports = {
         type: Sequelize.STRING(50),
         allowNull: false
       },
+      photo: {
+        type: Sequelize.STRING(150),
+      },
       phoneNumber: {
         type: Sequelize.STRING(15),
         allowNull: false
       },
       type: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: false,
+        defaultValue: 0,
       },
       address: {
         type: Sequelize.STRING(250)

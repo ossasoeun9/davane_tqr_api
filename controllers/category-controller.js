@@ -3,7 +3,12 @@ const { Category, Product } = require("../models/index.js");
 const getCategories = async (req, res) => {
   try {
     const categories = await Category.findAll({
-      where: { storeId: req.user.store.id },
+      where: {
+        storeId: req.user.store.id,
+      },
+      attributes: {
+        exclude: ["userId", "storeId", "createdAt", "updatedAt"],
+      },
     });
     return res.status(200).json(categories);
   } catch (error) {
@@ -26,8 +31,10 @@ const addCategory = async (req, res) => {
       storeId: user.store.id,
     });
 
-    delete dataValues.userId
-    delete dataValues.storeId
+    delete dataValues.userId;
+    delete dataValues.storeId;
+    delete dataValues.createdAt;
+    delete dataValues.updatedAt;
 
     return res.status(200).json(dataValues);
   } catch (error) {
@@ -45,10 +52,7 @@ const editCategory = async (req, res) => {
       return res.status(400).json({ message: "ID and Name required" });
     }
 
-    const response = await Category.update(
-      { name },
-      { where: { id } }
-    );
+    const response = await Category.update({ name }, { where: { id } });
 
     if (response[0] == 0) {
       return res.status(404).json({ message: "No category is updated" });

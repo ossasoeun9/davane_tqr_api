@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Product extends Model {
     /**
@@ -12,44 +10,50 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Product.belongsTo(models.Category, {
         foreignKey: "categoryId",
-        as: "category"
+        as: "category",
       }),
-      Product.belongsTo(models.Store, {
-        foreignKey: "storeId",
-        as: "store",
-      })
+        Product.belongsTo(models.Store, {
+          foreignKey: "storeId",
+          as: "store",
+        });
       Product.belongsTo(models.User, {
         foreignKey: "userId",
         as: "user",
       }),
-      Product.hasMany(models.QrCode, {
-        foreignKey: "productId",
-        as: "qrCodes"
-      })
+        Product.hasMany(models.QrCode, {
+          foreignKey: "productId",
+          as: "qrCodes",
+        });
       Product.belongsToMany(models.Ingredient, {
-        through: models.ProductHasIngredient,
-      })
+        through: models.ProductIngredient,
+        as: 'ingredients'
+      });
       Product.belongsToMany(models.Certificate, {
-        through: models.ProductHasCertificate,
-      })
+        through: models.ProductCertificate,
+        as: 'certificates'
+      });
     }
   }
-  Product.init({
-    id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
-      primaryKey: true,
+  Product.init(
+    {
+      id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey: true,
+      },
+      nameEn: DataTypes.STRING,
+      nameKh: DataTypes.STRING,
+      extId: DataTypes.STRING,
+      photo: DataTypes.STRING,
+      description: DataTypes.STRING,
+      unit: DataTypes.INTEGER,
+      price: DataTypes.DECIMAL,
+      note: DataTypes.STRING,
     },
-    nameEn: DataTypes.STRING,
-    nameKh: DataTypes.STRING,
-    photo: DataTypes.STRING,
-    description: DataTypes.STRING,
-    unit: DataTypes.NUMBER,
-    price: DataTypes.NUMBER,
-    note: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'Product',
-  });
+    {
+      sequelize,
+      modelName: "Product",
+    }
+  );
   return Product;
 };

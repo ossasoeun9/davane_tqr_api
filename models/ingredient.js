@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
         as: "store"
       })
       Ingredient.belongsToMany(models.Product, {
-        through: models.ProductHasIngredient,
+        through: models.ProductIngredient,
         as: "products",
       })
     }

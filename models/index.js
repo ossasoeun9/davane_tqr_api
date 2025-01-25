@@ -43,8 +43,8 @@ db.Ingredient = require('./ingredient.js')(sequelize, Sequelize.DataTypes);
 db.Product = require('./product.js')(sequelize, Sequelize.DataTypes);
 db.QrCode = require('./qrcode.js')(sequelize, Sequelize.DataTypes);
 db.Supplier = require('./supplier.js')(sequelize, Sequelize.DataTypes);
-db.ProductHasIngredient = require('./producthasingredient.js')(sequelize, Sequelize.DataTypes);
-db.ProductHasCertificate = require('./producthascertificate.js')(sequelize, Sequelize.DataTypes);
+db.ProductIngredient = require('./productingredient.js')(sequelize, Sequelize.DataTypes);
+db.ProductCertificate = require('./productcertificate.js')(sequelize, Sequelize.DataTypes);
 
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {

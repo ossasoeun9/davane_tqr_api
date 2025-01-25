@@ -18,7 +18,7 @@ const getProducts = async (req, res) => {
     const { page = 1, limit = 10, search = "" } = req.query; // Default to page 1, limit 10, and empty search
     const offset = (page - 1) * limit;
 
-    const { count, rows: products } = await Product.findAndCountAll({
+    const { count, rows: data } = await Product.findAndCountAll({
       offset,
       limit: parseInt(limit),
       where: {
@@ -37,20 +37,16 @@ const getProducts = async (req, res) => {
           "updatedAt",
           "description",
           "note",
-          "categoryId"
+          "categoryId",
         ],
       },
+      order: [['createdAt', 'DESC']],
       include: [
         {
           model: Category,
           as: "category",
           attributes: {
-            exclude: [
-              "userId", 
-              "storeId", 
-              "createdAt", 
-              "updatedAt"
-            ],
+            exclude: ["userId", "storeId", "createdAt", "updatedAt"],
           },
         },
       ],
@@ -59,13 +55,11 @@ const getProducts = async (req, res) => {
     const totalPages = Math.ceil(count / limit);
 
     return res.status(200).json({
-      products,
-      pagination: {
-        totalItems: count,
-        totalPages,
-        currentPage: parseInt(page),
-        itemsPerPage: parseInt(limit),
-      },
+      data,
+      totalItems: count,
+      totalPages,
+      currentPage: parseInt(page),
+      itemsPerPage: parseInt(limit),
     });
   } catch (error) {
     console.error(error);
@@ -84,12 +78,7 @@ const getProductDetail = async (req, res) => {
           model: Category,
           as: "category",
           attributes: {
-            exclude: [
-              "userId", 
-              "storeId", 
-              "createdAt", 
-              "updatedAt"
-            ],
+            exclude: ["userId", "storeId", "createdAt", "updatedAt"],
           },
         },
         {
@@ -102,7 +91,6 @@ const getProductDetail = async (req, res) => {
               "storeId",
               "createdAt",
               "updatedAt",
-              "ProductHasIngredient",
             ],
           },
         },
@@ -241,23 +229,23 @@ const editProduct = async (req, res) => {
     product.note = note;
 
     if (ingredients && ingredients.length > 0) {
-      await ProductIngredient.destroy({ where: { productId: id } });
-      const ingredientPromises = ingredients.map((ingredientId) =>
-        ProductIngredient.create({ productId: id, ingredientId })
+      await ProductIngredient.destroy({ where: { ProductId: id } });
+      const ingredientPromises = ingredients.map((IngredientId) =>
+        ProductIngredient.create({ ProductId: id, IngredientId })
       );
       await Promise.all(ingredientPromises);
     } else {
-      await ProductIngredient.destroy({ where: { productId: id } });
+      await ProductIngredient.destroy({ where: { ProductId: id } });
     }
 
     if (certificates && certificates.length > 0) {
-      await ProductCertificate.destroy({ where: { productId: id } });
-      const certificatePromises = certificates.map((certificateId) =>
-        ProductCertificate.create({ productId: id, certificateId })
+      await ProductCertificate.destroy({ where: { ProductId: id } });
+      const certificatePromises = certificates.map((CertificateId) =>
+        ProductCertificate.create({ ProductId: id, CertificateId })
       );
       await Promise.all(certificatePromises);
     } else {
-      await ProductCertificate.destroy({ where: { productId: id } });
+      await ProductCertificate.destroy({ where: { ProductId: id } });
     }
 
     const { photo: photoFile } = req.files;

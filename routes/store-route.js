@@ -9,7 +9,7 @@ router.post("/create", verifyToken, createStore);
 router.get("/:id", getStoreById);
 router.put("/edit", verifyToken2 , editStore);
 
-router.get("/certificate/:storeId", getCertificates)
+router.get("/certificate/list", verifyToken2, getCertificates)
 router.post("/certificate/create", verifyToken2, createCertificate)
 router.put("/certificate/edit/:id", verifyToken2, editCertificate)
 router.delete("/certificate/delete/:id", verifyToken2, deleteCertificate)

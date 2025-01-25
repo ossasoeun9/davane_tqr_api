@@ -25,6 +25,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'storeId',
         as: 'suppliers',
       })
+      Store.hasMany(models.QrCode, {
+        foreignKey: 'storeId',
+        as: "qrCodes"
+      })
     }
   }
   Store.init({

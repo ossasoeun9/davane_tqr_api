@@ -5,15 +5,21 @@ const bucket = require("../core/gcp/gcp-storage-bucket.js");
 
 const getCertificates = async (req, res) => {
   try {
-    const storeId = req.params.storeId;
+    const storeId = req.user.store.id;
     if (!storeId) {
       return res.status(400).json({ message: "Store ID is required" });
     }
-    const certificates = await Certificate.findAll({ where: { storeId } });
+    const certificates = await Certificate.findAll({
+      where: { storeId },
+      attributes: {
+        exclude: ["userId", "storeId"],
+      },
+      order: [["createdAt", "DESC"]],
+    });
     return res.status(200).json(certificates);
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: "Interßnal server error" });
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
 
@@ -106,7 +112,7 @@ const editCertificate = async (req, res) => {
 const deleteCertificate = async (req, res) => {
   try {
     const { id } = req.params;
-    const certificate = await Certificate.findByPk(id)
+    const certificate = await Certificate.findByPk(id);
     await bucket.file(certificate.photo).delete();
     await certificate.destroy();
     return res
@@ -118,4 +124,9 @@ const deleteCertificate = async (req, res) => {
   }
 };
 
-module.exports = { getCertificates, createCertificate, editCertificate, deleteCertificate };
+module.exports = {
+  getCertificates,
+  createCertificate,
+  editCertificate,
+  deleteCertificate,
+};

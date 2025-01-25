@@ -7,10 +7,10 @@ const bucket = require("../core/gcp/gcp-storage-bucket.js");
 const getSuppliers = async (req, res) => {
   try {
     const storeId = req.user.store.id;
-    const { page = 1, limit = 10, search = '' } = req.query; // Default to page 1 and limit 10
+    const { page = 1, limit = 10, search = "" } = req.query; // Default to page 1 and limit 10
     const offset = (page - 1) * limit;
 
-    const { count, rows: suppliers } = await Supplier.findAndCountAll({
+    const { count, rows: data } = await Supplier.findAndCountAll({
       offset,
       limit: parseInt(limit),
       where: {
@@ -21,18 +21,17 @@ const getSuppliers = async (req, res) => {
         ],
       },
       attributes: { exclude: ["userId", "storeId"] },
+      order: [['createdAt', 'DESC']],
     });
 
     const totalPages = Math.ceil(count / limit);
 
     return res.status(200).json({
-      suppliers,
-      pagination: {
-        totalItems: count,
-        totalPages,
-        currentPage: parseInt(page),
-        itemsPerPage: parseInt(limit),
-      },
+      data,
+      totalItems: count,
+      totalPages,
+      currentPage: parseInt(page),
+      itemsPerPage: parseInt(limit),
     });
   } catch (error) {
     console.error(error);
@@ -134,7 +133,7 @@ const deleteSupplier = async (req, res) => {
       return res.status(404).json({ message: "Supplier not found" });
     }
     if (supplier.photo) {
-      await bucket.file(supplier.photo).delete()
+      await bucket.file(supplier.photo).delete();
     }
     await supplier.destroy();
     return res.status(200).json({ message: "Supplier deleted successfully" });

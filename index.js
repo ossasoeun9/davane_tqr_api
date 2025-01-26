@@ -17,6 +17,13 @@ app.use(json());
 app.use(urlencoded({ extended: false, limit: "1.5mb" }));
 app.use(upload().fields([{ name: "photo", maxCount: 1 }]));
 
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*'); // Replace '*' with your app's origin to be more secure
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+});
+
 app.use("/auth", authRouter);
 app.use("/profile", profileRouter);
 app.use("/store", storeRouter);

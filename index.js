@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 const { urlencoded, json } = express;
 import { verifyToken2 } from "./controllers/auth-controller.js";
 import upload from "multer";
@@ -17,13 +18,15 @@ app.use(json());
 app.use(urlencoded({ extended: false, limit: "1.5mb" }));
 app.use(upload().fields([{ name: "photo", maxCount: 1 }]));
 
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*'); // Replace '*' with your app's origin to be more secure
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  next();
-});
+app.use(cors({
+  origin: '*', // Replace '*' with your app's origin to be more secure
+  methods: "GET, POST, PUT, DELETE, OPTIONS",
+  allowedHeaders: "Content-Type, Authorization"
+}));
 
+app.get("/", (_req, res) => {
+  res.send("Welcome to Davane TQR API");
+});
 app.use("/auth", authRouter);
 
 app.use(verifyToken2);

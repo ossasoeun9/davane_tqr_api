@@ -25,10 +25,10 @@ app.use((req, res, next) => {
 });
 
 app.use("/auth", authRouter);
-app.use("/profile", profileRouter);
-app.use("/store", storeRouter);
 
 app.use(verifyToken2);
+app.use("/profile", profileRouter);
+app.use("/store", storeRouter);
 app.use("/category", categoryRouter);
 app.use("/ingredient", ingredientRouter);
 app.use("/supplier", supplierRouter);

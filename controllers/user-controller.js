@@ -1,17 +1,19 @@
-import { User, Store } from "../models/index.js";
+import { User, Store, Certificate } from "../models/index.js";
 import uploadBuffer from "../core/gcp/upload-buffer.js";
 
-const getProfileById = async (req, res) => {
+const getProfile = async (req, res) => {
   try {
-    const { id } = req.params;
-    if (!id) {
-      return res.status(400).json({ message: "Id is required in params" });
-    }
+    const id = req.user.id;
     const user = await User.findByPk(id, {
       include: {
         model: Store,
         as: "store",
         attributes: { exclude: ["userId"] },
+        include: {
+          model: Certificate,
+          as: "certificates",
+          attributes: { exclude: ["userId", "storeId"] },
+        },
       },
     });
     if (!user) {
@@ -59,4 +61,4 @@ const editProfile = async (req, res) => {
   }
 };
 
-export { getProfileById, editProfile };
+export { getProfile, editProfile };

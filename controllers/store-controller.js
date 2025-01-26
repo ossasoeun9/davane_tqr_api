@@ -1,8 +1,8 @@
-import { Store, User } from "../models/index.js";
+import { Certificate, Store, User } from "../models/index.js";
 import jsonwebtoken from "jsonwebtoken";
 import uploadBuffer from "../core/gcp/upload-buffer.js";
 
-const sign = jsonwebtoken.sign
+const sign = jsonwebtoken.sign;
 
 const createStore = async (req, res) => {
   try {
@@ -42,7 +42,9 @@ const createStore = async (req, res) => {
         photo[0].mimetype,
         path
       );
-      await Store.update({ photo: path }, { where: { id: dataValues.id } });
+      if (isUploaded) {
+        await Store.update({ photo: path }, { where: { id: dataValues.id } });
+      }
     }
 
     const user = await User.findByPk(req.user.id, {
@@ -63,13 +65,17 @@ const createStore = async (req, res) => {
   }
 };
 
-const getStoreById = async (req, res) => {
+const getStore = async (req, res) => {
   try {
-    const { id } = req.params;
-    if (!id) {
-      return res.status(400).json({ message: "Id is required in params" });
-    }
-    const store = await Store.findByPk(id);
+    const id = req.user.store.id;
+    const store = await Store.findByPk(id, {
+      attributes: { exclude: ["userId"] },
+      include: {
+        model: Certificate,
+        as: "certificates",
+        attributes: { exclude: ["userId", "storeId"] },
+      },
+    });
     if (!store) {
       return res.status(404).json({ message: "Store not found" });
     }
@@ -82,7 +88,7 @@ const getStoreById = async (req, res) => {
 
 const editStore = async (req, res) => {
   try {
-    const { store } = req.user
+    const { store } = req.user;
     const { name, address, phoneNumber, email, facebook } = req.body;
 
     const data = { phoneNumber, email, facebook };
@@ -103,18 +109,18 @@ const editStore = async (req, res) => {
         path
       );
       if (isUploaded) {
-        data.photo = path
+        data.photo = path;
       }
     }
 
     await Store.update(data, { where: { id: store.id } });
-    
-    req.params.id = store.id
-    return await getStoreById(req, res)
+
+    req.params.id = store.id;
+    return await getStore(req, res);
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Internal server error" });
   }
 };
 
-export { createStore, getStoreById, editStore };
+export { createStore, getStore, editStore };

@@ -1,10 +1,9 @@
 import { Router } from "express";
 import {
   createStore,
-  getStoreById,
+  getStore,
   editStore,
 } from "../controllers/store-controller.js";
-import { verifyToken, verifyToken2 } from "../controllers/auth-controller.js";
 import {
   getCertificates,
   createCertificate,
@@ -14,13 +13,13 @@ import {
 
 const router = Router();
 
-router.post("/create", verifyToken, createStore);
-router.get("/:id", getStoreById);
-router.put("/edit", verifyToken2, editStore);
+router.post("/create", createStore);
+router.get("/", getStore);
+router.put("/edit", editStore);
 
-router.get("/certificate/list", verifyToken2, getCertificates);
-router.post("/certificate/create", verifyToken2, createCertificate);
-router.put("/certificate/edit/:id", verifyToken2, editCertificate);
-router.delete("/certificate/delete/:id", verifyToken2, deleteCertificate);
+router.get("/certificate/list", getCertificates);
+router.post("/certificate/create", createCertificate);
+router.put("/certificate/edit/:id", editCertificate);
+router.delete("/certificate/delete/:id", deleteCertificate);
 
 export default router;

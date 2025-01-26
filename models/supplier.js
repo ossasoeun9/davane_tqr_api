@@ -1,5 +1,5 @@
 "use strict";
-import { Model } from "sequelize";
+import { Model } from "@sequelize/core";
 import { Store, User } from "./index.js";
 export default (sequelize, DataTypes) => {
   class Supplier extends Model {
@@ -29,7 +29,7 @@ export default (sequelize, DataTypes) => {
       name: DataTypes.STRING,
       phoneNumber: DataTypes.STRING,
       photo: DataTypes.STRING,
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
       address: DataTypes.STRING,
       note: DataTypes.STRING,
     },

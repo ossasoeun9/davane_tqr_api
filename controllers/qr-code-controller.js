@@ -1,5 +1,5 @@
 import { QrCode, Product, Supplier, Category, Certificate, Ingredient } from "../models/index.js";
-import { Op } from "sequelize";
+import { Op } from "@sequelize/core";
 
 const getQrCodes = async (req, res) => {
   try {

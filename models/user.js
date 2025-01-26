@@ -1,5 +1,5 @@
 "use strict";
-import { Model } from "sequelize";
+import { Model } from "@sequelize/core";
 import { Category, Certificate, Store, Supplier } from "./index.js";
 
 export default (sequelize, DataTypes) => {

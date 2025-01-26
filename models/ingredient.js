@@ -1,5 +1,5 @@
 "use strict";
-import { Model } from "sequelize";
+import { Model } from "@sequelize/core";
 import { Product, ProductIngredient, Store, User } from "./index.js";
 export default (sequelize, DataTypes) => {
   class Ingredient extends Model {

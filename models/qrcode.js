@@ -1,5 +1,5 @@
 "use strict";
-import { Model } from "sequelize";
+import { Model } from "@sequelize/core";
 import { Product, Store, Supplier, User } from "./index.js";
 export default (sequelize, DataTypes) => {
   class QrCode extends Model {

@@ -1,7 +1,7 @@
 import { Product, Ingredient, Certificate, ProductCertificate, ProductIngredient, QrCode, Category } from "../models/index.js";
 import uploadBuffer from "../core/gcp/upload-buffer.js";
 import bucket from "../core/gcp/gcp-storage-bucket.js";
-import { Op } from "sequelize";
+import { Op } from "@sequelize/core";
 
 // Get products with pagination and search
 const getProducts = async (req, res) => {

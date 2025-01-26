@@ -1,6 +1,6 @@
 "use strict";
 import { Connector } from "@google-cloud/cloud-sql-connector";
-import Sequelize, { DataTypes } from "sequelize";
+import Sequelize, { DataTypes } from "@sequelize/core";
 import user from "./user.js";
 import store from "./store.js";
 import certificate from "./certificate.js";
@@ -11,6 +11,7 @@ import qrCode from "./qrcode.js";
 import supplier from "./supplier.js";
 import productIngredient from "./productingredient.js";
 import productCertificate from "./productcertificate.js";
+import { MySqlDialect } from "@sequelize/mysql";
 
 const connector = new Connector();
 const clientOpts = await connector.getOptions({
@@ -18,22 +19,15 @@ const clientOpts = await connector.getOptions({
   ipType: "PUBLIC",
 });
 
-const config = {
+const sequelize = new Sequelize({
   ...clientOpts,
-  username: process.env.DB_USERNAME,
+  user: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
-  socketPath: process.env.DB_SOCKET_PATH,
-  dialect: process.env.DB_DIALECT,
-  logging: process.env.LOGGING,
-};
-
-const sequelize = new Sequelize(
-  config.database,
-  config.username,
-  config.password,
-  config
-);
+  port: parseInt(process.env.DB_PORT, 10),
+  dialect: MySqlDialect,
+  logging: process.env.DB_LOGGING === "true",
+});
 
 const User = user(sequelize, DataTypes);
 const Store = store(sequelize, DataTypes);

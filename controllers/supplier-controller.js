@@ -1,6 +1,6 @@
 import { Supplier } from "../models/index.js";
 import uploadBuffer from "../core/gcp/upload-buffer.js";
-import { Op } from "sequelize";
+import { Op } from "@sequelize/core";
 import bucket from "../core/gcp/gcp-storage-bucket.js";
 
 // Get suppliers by storeId

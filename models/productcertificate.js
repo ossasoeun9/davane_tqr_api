@@ -1,5 +1,5 @@
 'use strict';
-import { Model } from 'sequelize';
+import { Model } from '@sequelize/core';
 export default (sequelize, DataTypes) => {
   class ProductCertificate extends Model {
     /**

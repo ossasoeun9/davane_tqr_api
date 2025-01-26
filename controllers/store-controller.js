@@ -1,6 +1,8 @@
-const { Store, User } = require("../models/index.js");
-const jwt = require("jsonwebtoken");
-const uploadBuffer = require("../core/gcp/upload-buffer.js");
+import { Store, User } from "../models/index.js";
+import jsonwebtoken from "jsonwebtoken";
+import uploadBuffer from "../core/gcp/upload-buffer.js";
+
+const sign = jsonwebtoken.sign
 
 const createStore = async (req, res) => {
   try {
@@ -51,7 +53,7 @@ const createStore = async (req, res) => {
       },
     });
 
-    const accessToken = jwt.sign(user.toJSON(), process.env.JWT_SECRET, {
+    const accessToken = sign(user.toJSON(), process.env.JWT_SECRET, {
       algorithm: "HS256",
     });
     return res.status(201).json({ accessToken, user });
@@ -115,4 +117,4 @@ const editStore = async (req, res) => {
   }
 };
 
-module.exports = { createStore, getStoreById, editStore };
+export { createStore, getStoreById, editStore };

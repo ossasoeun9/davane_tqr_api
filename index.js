@@ -1,23 +1,32 @@
-const express = require("express");
-const { verifyToken2 } = require("./controllers/auth-controller.js");
-const upload = require("multer")();
+import express from "express";
+const { urlencoded, json } = express;
+import { verifyToken2 } from "./controllers/auth-controller.js";
+import upload from "multer";
+import authRouter from "./routes/auth-route.js";
+import profileRouter from "./routes/user-route.js";
+import storeRouter from "./routes/store-route.js";
+import categoryRouter from "./routes/category-route.js";
+import ingredientRouter from "./routes/ingredient-route.js";
+import supplierRouter from "./routes/supplier-route.js";
+import productRouter from "./routes/product-route.js";
+import qrCodeRouter from "./routes/qr-code-route.js";
 
 const app = express();
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: false, limit: "1.5mb" }));
-app.use(upload.fields([{ name: "photo", maxCount: 1 }]));
+app.use(json());
+app.use(urlencoded({ extended: false, limit: "1.5mb" }));
+app.use(upload().fields([{ name: "photo", maxCount: 1 }]));
 
-app.use("/auth", require("./routes/auth-route.js"));
-app.use("/profile", require("./routes/user-route.js"));
-app.use("/store", require("./routes/store-route.js"));
+app.use("/auth", authRouter);
+app.use("/profile", profileRouter);
+app.use("/store", storeRouter);
 
 app.use(verifyToken2);
-app.use("/category", require("./routes/category-route.js"));
-app.use("/ingredient", require("./routes/ingredient-route.js"));
-app.use("/supplier", require("./routes/supplier-route.js"));
-app.use("/product", require("./routes/product-route.js"));
-app.use("/qr_code", require("./routes/qr-code-route.js"));
+app.use("/category", categoryRouter);
+app.use("/ingredient", ingredientRouter);
+app.use("/supplier", supplierRouter);
+app.use("/product", productRouter);
+app.use("/qr_code", qrCodeRouter);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {

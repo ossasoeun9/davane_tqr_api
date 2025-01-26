@@ -1,7 +1,7 @@
-const { Supplier } = require("../models/index.js");
-const uploadBuffer = require("../core/gcp/upload-buffer.js");
-const { Op } = require("sequelize");
-const bucket = require("../core/gcp/gcp-storage-bucket.js");
+import { Supplier } from "../models/index.js";
+import uploadBuffer from "../core/gcp/upload-buffer.js";
+import { Op } from "sequelize";
+import bucket from "../core/gcp/gcp-storage-bucket.js";
 
 // Get suppliers by storeId
 const getSuppliers = async (req, res) => {
@@ -143,7 +143,7 @@ const deleteSupplier = async (req, res) => {
   }
 };
 
-module.exports = {
+export {
   getSuppliers,
   createSupplier,
   editSupplier,

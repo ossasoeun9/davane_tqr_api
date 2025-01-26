@@ -1,6 +1,6 @@
-const bucket = require('./gcp-storage-bucket.js');
+import bucket from './gcp-storage-bucket.js';
 
-module.exports = async function uploadBuffer(buffer, contentType, path) {
+export default async function uploadBuffer(buffer, contentType, path) {
     try {
       const file = bucket.file(path);
       const stream = file.createWriteStream({

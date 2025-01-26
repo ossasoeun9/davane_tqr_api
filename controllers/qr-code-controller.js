@@ -1,12 +1,5 @@
-const {
-  QrCode,
-  Product,
-  Supplier,
-  Category,
-  Certificate,
-  Ingredient,
-} = require("../models/index.js");
-const { Op } = require("sequelize");
+import { QrCode, Product, Supplier, Category, Certificate, Ingredient } from "../models/index.js";
+import { Op } from "sequelize";
 
 const getQrCodes = async (req, res) => {
   try {
@@ -221,7 +214,7 @@ const deleteQrCode = async (req, res) => {
   }
 };
 
-module.exports = {
+export {
   getQrCodes,
   getQrCodeDetail,
   createQrCode,

@@ -1,15 +1,15 @@
-const express = require("express");
-const router = express.Router();
-const {
+import { Router } from "express";
+const router = Router();
+import {
   getIngredients,
   addIngredient,
   editIngredient,
   deleteIngredient,
-} = require('../controllers/ingredient-controller.js');
+} from "../controllers/ingredient-controller.js";
 
 router.get("/", getIngredients);
 router.post("/add", addIngredient);
-router.put("/edit/:id", editIngredient)
+router.put("/edit/:id", editIngredient);
 router.delete("/delete/:id", deleteIngredient);
 
-module.exports = router;
+export default router;

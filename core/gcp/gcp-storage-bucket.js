@@ -1,4 +1,4 @@
-const { Storage } = require("@google-cloud/storage");
+import { Storage } from "@google-cloud/storage";
 
 const projectId = process.env.GCP_PROJECT_ID;
 const credentials = {
@@ -17,4 +17,4 @@ const credentials = {
 
 const bucket = new Storage({ projectId, credentials }).bucket("davane_tqr");
 
-module.exports = bucket;
+export default bucket;

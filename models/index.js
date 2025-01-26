@@ -1,7 +1,25 @@
 "use strict";
+import { Connector } from "@google-cloud/cloud-sql-connector";
+import Sequelize, { DataTypes } from "sequelize";
+import user from "./user.js";
+import store from "./store.js";
+import certificate from "./certificate.js";
+import category from "./category.js";
+import ingredient from "./ingredient.js";
+import product from "./product.js";
+import qrCode from "./qrcode.js";
+import supplier from "./supplier.js";
+import productIngredient from "./productingredient.js";
+import productCertificate from "./productcertificate.js";
 
-const Sequelize = require("sequelize");
+const connector = new Connector();
+const clientOpts = await connector.getOptions({
+  instanceConnectionName: process.env.DB_INSTANCE_CONNECTION_NAME,
+  ipType: "PUBLIC",
+});
+
 const config = {
+  ...clientOpts,
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
@@ -9,7 +27,6 @@ const config = {
   dialect: process.env.DB_DIALECT,
   logging: process.env.LOGGING,
 };
-const db = {};
 
 const sequelize = new Sequelize(
   config.database,
@@ -18,27 +35,37 @@ const sequelize = new Sequelize(
   config
 );
 
-db.User = require("./user.js")(sequelize, Sequelize.DataTypes);
-db.Store = require("./store.js")(sequelize, Sequelize.DataTypes);
-db.Certificate = require("./certificate.js")(sequelize, Sequelize.DataTypes);
-db.Category = require("./category.js")(sequelize, Sequelize.DataTypes);
-db.Ingredient = require("./ingredient.js")(sequelize, Sequelize.DataTypes);
-db.Product = require("./product.js")(sequelize, Sequelize.DataTypes);
-db.QrCode = require("./qrcode.js")(sequelize, Sequelize.DataTypes);
-db.Supplier = require("./supplier.js")(sequelize, Sequelize.DataTypes);
-db.ProductIngredient = require("./productingredient.js")(
-  sequelize,
-  Sequelize.DataTypes
-);
-db.ProductCertificate = require("./productcertificate.js")(
-  sequelize,
-  Sequelize.DataTypes
-);
+const User = user(sequelize, DataTypes);
+const Store = store(sequelize, DataTypes);
+const Certificate = certificate(sequelize, DataTypes);
+const Category = category(sequelize, DataTypes);
+const Ingredient = ingredient(sequelize, DataTypes);
+const Product = product(sequelize, DataTypes);
+const QrCode = qrCode(sequelize, DataTypes);
+const Supplier = supplier(sequelize, DataTypes);
+const ProductIngredient = productIngredient(sequelize, DataTypes);
+const ProductCertificate = productCertificate(sequelize, DataTypes);
 
-Object.keys(db).forEach((modelName) => {
-  if (db[modelName].associate) {
-    db[modelName].associate(db);
-  }
-});
+User.associate();
+Store.associate();
+Certificate.associate();
+Category.associate();
+Ingredient.associate();
+Product.associate();
+QrCode.associate();
+Supplier.associate();
+ProductIngredient.associate();
+ProductCertificate.associate();
 
-module.exports = db;
+export {
+  User,
+  Store,
+  Certificate,
+  Category,
+  Ingredient,
+  Product,
+  QrCode,
+  Supplier,
+  ProductIngredient,
+  ProductCertificate,
+};

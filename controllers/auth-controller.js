@@ -1,7 +1,10 @@
 
-const crypto = require("crypto");
-const jwt = require("jsonwebtoken");
-const { User, Store } = require("../models/index.js");
+import { pbkdf2Sync } from "crypto";
+import jsonwebtoken from "jsonwebtoken";
+import { User, Store } from "../models/index.js";
+
+const sign = jsonwebtoken.sign
+const verify = jsonwebtoken.verify
 
 const login = async (req, res) => {
   try {
@@ -33,7 +36,7 @@ const login = async (req, res) => {
         .json({ message: "Phone number or password is incorrect" });
     }
 
-    const accessToken = jwt.sign(user.toJSON(), process.env.JWT_SECRET, {algorithm: "HS256"});
+    const accessToken = sign(user.toJSON(), process.env.JWT_SECRET, {algorithm: "HS256"});
 
     return res.status(200).json({ accessToken, user });
   } catch (error) {
@@ -44,8 +47,7 @@ const login = async (req, res) => {
 
 const hashPassword = (password) => {
   const salt = process.env.HASH_SECRET || "default_salt";
-  const hash = crypto
-    .pbkdf2Sync(password, salt, 1000, 64, "sha512")
+  const hash = pbkdf2Sync(password, salt, 1000, 64, "sha512")
     .toString("hex");
     return hash;
 };
@@ -57,7 +59,7 @@ const verifyToken = (req, res, next) => {
   }
   token = token.replace("Bearer ", "");
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+  verify(token, process.env.JWT_SECRET, (err, user) => {
     if (err) {
       return res.status(403).json({ message: err.message });
     }
@@ -73,7 +75,7 @@ const verifyToken2 = (req, res, next) => {
   }
   token = token.replace("Bearer ", "");
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+  verify(token, process.env.JWT_SECRET, (err, user) => {
     if (err) {
       return res.status(403).json({ message: err.message });
     }
@@ -85,4 +87,4 @@ const verifyToken2 = (req, res, next) => {
   });
 }
 
-module.exports = { login, verifyToken, verifyToken2 };
+export { login, verifyToken, verifyToken2 };

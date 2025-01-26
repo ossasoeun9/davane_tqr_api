@@ -1,6 +1,5 @@
-const bucket = require("../core/gcp/gcp-storage-bucket.js");
-const { User, Store } = require("../models/index.js");
-const uploadBuffer = require("../core/gcp/upload-buffer.js");
+import { User, Store } from "../models/index.js";
+import uploadBuffer from "../core/gcp/upload-buffer.js";
 
 const getProfileById = async (req, res) => {
   try {
@@ -60,4 +59,4 @@ const editProfile = async (req, res) => {
   }
 };
 
-module.exports = { getProfileById, editProfile };
+export { getProfileById, editProfile };

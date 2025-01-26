@@ -1,4 +1,4 @@
-const { Category, Product } = require("../models/index.js");
+import { Category, Product } from "../models/index.js";
 
 const getCategories = async (req, res) => {
   try {
@@ -89,7 +89,7 @@ const deleteCategory = async (req, res) => {
   }
 };
 
-module.exports = {
+export {
   getCategories,
   addCategory,
   editCategory,

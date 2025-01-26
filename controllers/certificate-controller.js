@@ -1,7 +1,6 @@
-const { Certificate } = require("../models/index.js");
-const uploadBuffer = require("../core/gcp/upload-buffer.js");
-const user = require("../models/user.js");
-const bucket = require("../core/gcp/gcp-storage-bucket.js");
+import { Certificate } from "../models/index.js";
+import uploadBuffer from "../core/gcp/upload-buffer.js";
+import bucket from "../core/gcp/gcp-storage-bucket.js";
 
 const getCertificates = async (req, res) => {
   try {
@@ -124,7 +123,7 @@ const deleteCertificate = async (req, res) => {
   }
 };
 
-module.exports = {
+export {
   getCertificates,
   createCertificate,
   editCertificate,

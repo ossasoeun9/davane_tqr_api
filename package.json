@@ -3,13 +3,14 @@
   "version": "1.0.0",
   "description": "Davane TQR API",
   "main": "index.js",
-  "type": "commonjs",
+  "type": "module",
   "scripts": {
     "start": "node index.js"
   },
   "author": "Ossa",
   "license": "ISC",
   "dependencies": {
+    "@google-cloud/cloud-sql-connector": "^1.6.0",
     "@google-cloud/storage": "^7.15.0",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",

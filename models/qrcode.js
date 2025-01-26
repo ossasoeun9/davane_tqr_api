@@ -1,45 +1,47 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
+"use strict";
+import { Model } from "sequelize";
+import { Product, Store, Supplier, User } from "./index.js";
+export default (sequelize, DataTypes) => {
   class QrCode extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
-      QrCode.belongsTo(models.User, {
+    static associate() {
+      QrCode.belongsTo(User, {
         foreignKey: "userId",
         as: "user",
-      })
-      QrCode.belongsTo(models.Store, {
+      });
+      QrCode.belongsTo(Store, {
         foreignKey: "storeId",
-        as: "store"
-      })
-      QrCode.belongsTo(models.Supplier, {
+        as: "store",
+      });
+      QrCode.belongsTo(Supplier, {
         foreignKey: "supplierId",
-        as: "supplier"
-      })
-      QrCode.belongsTo(models.Product, {
+        as: "supplier",
+      });
+      QrCode.belongsTo(Product, {
         foreignKey: "productId",
-        as: "product"
-      })
+        as: "product",
+      });
     }
   }
-  QrCode.init({
-    id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
-      primaryKey: true,
+  QrCode.init(
+    {
+      id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey: true,
+      },
+      createDate: DataTypes.DATE,
+      expireDate: DataTypes.DATE,
+      note: DataTypes.STRING,
     },
-    createDate: DataTypes.DATE,
-    expireDate: DataTypes.DATE,
-    note: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'QrCode',
-  });
+    {
+      sequelize,
+      modelName: "QrCode",
+    }
+  );
   return QrCode;
 };

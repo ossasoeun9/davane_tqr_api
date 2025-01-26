@@ -1,26 +1,27 @@
 "use strict";
-const { Model } = require("sequelize");
+import { Model } from "sequelize";
+import { Product, ProductCertificate, Store, User } from "./index.js";
 
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   class Certificate extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
-      Certificate.belongsTo(models.Store, {
+    static associate() {
+      Certificate.belongsTo(Store, {
         foreignKey: "storeId",
         as: "store",
       });
-      Certificate.belongsTo(models.User, {
+      Certificate.belongsTo(User, {
         foreignKey: "userId",
         as: "user",
       });
-      Certificate.belongsToMany(models.Product, {
-        through: models.ProductCertificate,
-        as: "products"
-      })
+      Certificate.belongsToMany(Product, {
+        through: ProductCertificate,
+        as: "products",
+      });
     }
   }
   Certificate.init(

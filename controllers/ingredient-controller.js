@@ -1,4 +1,4 @@
-const { Ingredient } = require("../models/index.js");
+import { Ingredient } from "../models/index.js";
 
 const getIngredients = async (req, res) => {
   try {
@@ -86,7 +86,7 @@ const deleteIngredient = async (req, res) => {
   }
 };
 
-module.exports = {
+export {
   getIngredients,
   addIngredient,
   editIngredient,

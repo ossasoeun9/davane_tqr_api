@@ -1,17 +1,17 @@
-const express = require('express');
-const router = express.Router();
-const {
+import { Router } from "express";
+const router = Router();
+import {
   getQrCodes,
   getQrCodeDetail,
   createQrCode,
   editQrCodeNote,
-  deleteQrCode
-} = require('../controllers/qr-code-controller.js');
+  deleteQrCode,
+} from "../controllers/qr-code-controller.js";
 
-router.get('/', getQrCodes);
-router.get('/detail/:id', getQrCodeDetail);
-router.post('/add', createQrCode);
-router.put('/note/:id', editQrCodeNote);
-router.delete('/delete/:id', deleteQrCode);
+router.get("/", getQrCodes);
+router.get("/detail/:id", getQrCodeDetail);
+router.post("/add", createQrCode);
+router.put("/note/:id", editQrCodeNote);
+router.delete("/delete/:id", deleteQrCode);
 
-module.exports = router;
+export default router;

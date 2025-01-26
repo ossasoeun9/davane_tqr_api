@@ -1,9 +1,10 @@
-const router = require('express').Router();
+import { Router } from "express";
+import { verifyToken } from "../controllers/auth-controller.js";
+import { getProfileById, editProfile } from "../controllers/user-controller.js";
 
-const { verifyToken } = require('../controllers/auth-controller.js');
-const { getProfileById, editProfile } = require('../controllers/user-controller.js');
+const router = Router();
 
-router.get('/:id', getProfileById);
-router.put('/edit', verifyToken, editProfile);
+router.get("/:id", getProfileById);
+router.put("/edit", verifyToken, editProfile);
 
-module.exports = router;
+export default router;

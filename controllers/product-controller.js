@@ -1,15 +1,7 @@
-const {
-  Product,
-  Ingredient,
-  Certificate,
-  ProductCertificate,
-  ProductIngredient,
-  QrCode,
-  Category,
-} = require("../models/index.js");
-const uploadBuffer = require("../core/gcp/upload-buffer.js");
-const bucket = require("../core/gcp/gcp-storage-bucket.js");
-const { Op } = require("sequelize");
+import { Product, Ingredient, Certificate, ProductCertificate, ProductIngredient, QrCode, Category } from "../models/index.js";
+import uploadBuffer from "../core/gcp/upload-buffer.js";
+import bucket from "../core/gcp/gcp-storage-bucket.js";
+import { Op } from "sequelize";
 
 // Get products with pagination and search
 const getProducts = async (req, res) => {
@@ -292,7 +284,7 @@ const deleteProduct = async (req, res) => {
   }
 };
 
-module.exports = {
+export {
   getProducts,
   getProductDetail,
   createProduct,

@@ -1,16 +1,16 @@
-const express = require("express");
-const {
+import { Router } from "express";
+import {
   getSuppliers,
   createSupplier,
   editSupplier,
-  deleteSupplier
-} = require("../controllers/supplier-controller.js");
+  deleteSupplier,
+} from "../controllers/supplier-controller.js";
 
-const router = express.Router();
+const router = Router();
 
 router.get("/", getSuppliers);
 router.post("/add", createSupplier);
 router.put("/edit/:id", editSupplier);
 router.delete("/delete/:id", deleteSupplier);
 
-module.exports = router;
+export default router;

@@ -103,14 +103,12 @@ const editStore = async (req, res) => {
     if (photo) {
       const ext = photo[0].originalname.split(".").pop();
       const path = `stores/${store.id}.${ext}`;
-      const isUploaded = await uploadBuffer(
+      await uploadBuffer(
         photo[0].buffer,
         photo[0].mimetype,
         path
       );
-      if (isUploaded) {
-        data.photo = path;
-      }
+      data.photo = path;
     }
 
     await Store.update(data, { where: { id: store.id } });

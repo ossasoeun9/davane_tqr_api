@@ -42,9 +42,7 @@ const editProfile = async (req, res) => {
         photo[0].mimetype,
         path
       );
-      if (isUploaded) {
-        data.photo = path;
-      }
+      data.photo = path;
     }
 
     if (firstName) {

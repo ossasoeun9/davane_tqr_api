@@ -154,17 +154,17 @@ const createProduct = async (req, res) => {
     });
 
     if (ingredients && ingredients.length > 0) {
-      const ingredientPromises = ingredients.map((IngredientId) =>
-        ProductIngredient.create({ ProductId: newProduct.id, IngredientId })
+      const ingredientPromises = ingredients.map((ingredientId) =>
+        ProductIngredient.create({ productId: newProduct.id, ingredientId })
       );
       await Promise.all(ingredientPromises);
     }
 
     if (certificates && certificates.length > 0) {
-      const certificatePromises = certificates.map((CertificateId) =>
+      const certificatePromises = certificates.map((certificateId) =>
         ProductCertificate.create({
-          ProductId: newProduct.id,
-          CertificateId,
+          productId: newProduct.id,
+          certificateId,
         })
       );
       await Promise.all(certificatePromises);

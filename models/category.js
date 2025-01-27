@@ -1,5 +1,5 @@
 "use strict";
-import { Model } from "@sequelize/core";
+import { Model, sql } from "@sequelize/core";
 import { Product, Store, User } from "./index.js";
 export default (sequelize, DataTypes) => {
   class Category extends Model {
@@ -27,7 +27,7 @@ export default (sequelize, DataTypes) => {
     {
       id: {
         type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
+        defaultValue: sql.uuidV4,
         primaryKey: true,
       },
       name: DataTypes.STRING,

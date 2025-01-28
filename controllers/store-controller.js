@@ -1,6 +1,7 @@
 import { Certificate, Store, User } from "../models/index.js";
 import jsonwebtoken from "jsonwebtoken";
 import uploadBuffer from "../core/gcp/upload-buffer.js";
+import bucket from "../core/gcp/gcp-storage-bucket.js";
 
 const sign = jsonwebtoken.sign;
 
@@ -88,35 +89,39 @@ const getStore = async (req, res) => {
 
 const editStore = async (req, res) => {
   try {
-    const { store } = req.user;
+    const { id } = req.user.store;
     const { name, address, phoneNumber, email, facebook } = req.body;
 
-    const data = { phoneNumber, email, facebook };
-    if (name) {
-      data.name = name;
-    }
-    if (address) {
-      data.address = address;
-    }
+    const store = await Store.findByPk(id);
+    store.name = name || store.name;
+    store.address = address || store.address;
+    store.phoneNumber = phoneNumber;
+    store.email = email;
+    store.facebook = facebook;
 
     const { photo } = req.files;
     if (photo) {
+      if (store.photo) {
+        await bucket.file(store.photo).delete();
+      }
       const ext = photo[0].originalname.split(".").pop();
       const path = `stores/${store.id}.${ext}`;
-      await uploadBuffer(
+      const isUploaded = await uploadBuffer(
         photo[0].buffer,
         photo[0].mimetype,
         path
       );
-      data.photo = path;
+      if (isUploaded) {
+        store.photo = path;
+      } else {
+        delete store.photo;
+      }
     }
 
-    await Store.update(data, { where: { id: store.id } });
+    await store.save();
 
-    req.params.id = store.id;
-    return await getStore(req, res);
+    return res.status(200).json(store);
   } catch (error) {
-    console.error(error);
     return res.status(500).json({ message: "Internal server error" });
   }
 };

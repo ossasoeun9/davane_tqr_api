@@ -86,6 +86,9 @@ const editCertificate = async (req, res) => {
     }
 
     if (photo) {
+      if (certificate.photo) {
+        await bucket.file(certificate.photo).delete();
+      }
       const ext = photo[0].originalname.split(".").pop();
       const path = certificate.photo ?? `certificates/${Date.now()}.${ext}`;
       const isUploaded = await uploadBuffer(

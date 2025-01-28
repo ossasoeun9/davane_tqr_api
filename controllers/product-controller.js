@@ -40,6 +40,7 @@ const getProducts = async (req, res) => {
           attributes: {
             exclude: ["userId", "storeId", "createdAt", "updatedAt"],
           },
+          order: [['createdAt', 'DESC']],
         },
       ],
     });
@@ -221,9 +222,9 @@ const editProduct = async (req, res) => {
     product.note = note;
 
     if (ingredients && ingredients.length > 0) {
-      await ProductIngredient.destroy({ where: { ProductId: id } });
-      const ingredientPromises = ingredients.map((IngredientId) =>
-        ProductIngredient.create({ ProductId: id, IngredientId })
+      await ProductIngredient.destroy({ where: { productId: id } });
+      const ingredientPromises = ingredients.map((ingredientId) =>
+        ProductIngredient.create({ productId: id, ingredientId })
       );
       await Promise.all(ingredientPromises);
     } else {
@@ -231,17 +232,20 @@ const editProduct = async (req, res) => {
     }
 
     if (certificates && certificates.length > 0) {
-      await ProductCertificate.destroy({ where: { ProductId: id } });
-      const certificatePromises = certificates.map((CertificateId) =>
-        ProductCertificate.create({ ProductId: id, CertificateId })
+      await ProductCertificate.destroy({ where: { productId: id } });
+      const certificatePromises = certificates.map((certificateId) =>
+        ProductCertificate.create({ productId: id, certificateId })
       );
       await Promise.all(certificatePromises);
     } else {
-      await ProductCertificate.destroy({ where: { ProductId: id } });
+      await ProductCertificate.destroy({ where: { productId: id } });
     }
 
     const { photo: photoFile } = req.files;
     if (photoFile) {
+      if (product.path) {
+        await bucket.file(product.photo).delete();
+      }
       const ext = photoFile[0].originalname.split(".").pop();
       const path = `products/${product.dataValues.id}.${ext}`;
       const isUploaded = await uploadBuffer(
@@ -251,6 +255,8 @@ const editProduct = async (req, res) => {
       );
       if (isUploaded) {
         product.photo = path;
+      } else {
+        delete product.photo
       }
     }
 

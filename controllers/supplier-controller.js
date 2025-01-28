@@ -21,7 +21,7 @@ const getSuppliers = async (req, res) => {
         ],
       },
       attributes: { exclude: ["userId", "storeId"] },
-      order: [['createdAt', 'DESC']],
+      order: [["createdAt", "DESC"]],
     });
 
     const totalPages = Math.ceil(count / limit);
@@ -99,6 +99,9 @@ const editSupplier = async (req, res) => {
 
     const { photo } = req.files;
     if (photo) {
+      if (supplier.photo) {
+        await bucket.file(supplier.photo).delete();
+      }
       const ext = photo[0].originalname.split(".").pop();
       const path = `suppliers/${supplier.dataValues.id}.${ext}`;
       const isUploaded = await uploadBuffer(
@@ -108,6 +111,8 @@ const editSupplier = async (req, res) => {
       );
       if (isUploaded) {
         supplier.photo = path;
+      } else {
+        delete supplier.photo;
       }
     }
 
@@ -143,9 +148,4 @@ const deleteSupplier = async (req, res) => {
   }
 };
 
-export {
-  getSuppliers,
-  createSupplier,
-  editSupplier,
-  deleteSupplier,
-};
+export { getSuppliers, createSupplier, editSupplier, deleteSupplier };

@@ -30,10 +30,14 @@ const editProfile = async (req, res) => {
   try {
     const { id } = req.user;
 
-    const { firstName, lastName } = req.body;
-    const { photo } = req.files;
+    const user = await User.findByPk(id);
 
-    const data = { lastName };
+    const { firstName, lastName } = req.body;
+
+    user.firstName = firstName || user.firstName
+    user.lastName = lastName || user.lastName
+
+    const { photo } = req.files;
     if (photo) {
       const ext = photo[0].originalname.split(".").pop();
       const path = `users/${id}.${ext}`;
@@ -42,17 +46,15 @@ const editProfile = async (req, res) => {
         photo[0].mimetype,
         path
       );
-      data.photo = path;
+      if (isUploaded) {
+        user.photo = path
+      } else {
+        delete user.photo
+      }
     }
 
-    if (firstName) {
-      data.firstName = firstName;
-    }
-
-    await User.update(data, { where: { id } });
-
-    req.params.id = id
-    return await getProfileById(req, res);
+    await user.save()
+    return res.status(200).json(user);
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Internal server error" });

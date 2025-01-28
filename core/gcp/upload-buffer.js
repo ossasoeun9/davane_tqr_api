@@ -16,8 +16,10 @@ export default async function uploadBuffer(buffer, contentType, path) {
         stream.on('finish', resolve);
       });
 
+      console.log("okkkkkkk bucket")
       return true
     } catch (error) {
+      console.log(`Bucket error: ${error}`)
       return false
     }
   }

@@ -1,5 +1,6 @@
 import { User, Store, Certificate } from "../models/index.js";
 import uploadBuffer from "../core/gcp/upload-buffer.js";
+import bucket from "../core/gcp/gcp-storage-bucket.js";
 
 const getProfile = async (req, res) => {
   try {
@@ -39,6 +40,9 @@ const editProfile = async (req, res) => {
 
     const { photo } = req.files;
     if (photo) {
+      if (user.photo) {
+        await bucket.file(user.photo).delete();
+      }
       const ext = photo[0].originalname.split(".").pop();
       const path = `users/${id}.${ext}`;
       const isUploaded = await uploadBuffer(

@@ -15,6 +15,8 @@ const credentials = {
   universe_domain: process.env.GPC_UNIVERSE_DOMAIN,
 };
 
+console.log(credentials)
+
 const bucket = new Storage({ projectId, credentials }).bucket("davane_tqr");
 
 export default bucket;

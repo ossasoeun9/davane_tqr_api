@@ -11,6 +11,7 @@ import ingredientRouter from "./routes/ingredient-route.js";
 import supplierRouter from "./routes/supplier-route.js";
 import productRouter from "./routes/product-route.js";
 import qrCodeRouter from "./routes/qr-code-route.js";
+import imageRouter from "./routes/image-router.js";
 
 const app = express();
 
@@ -18,17 +19,20 @@ app.use(json());
 app.use(urlencoded({ extended: false, limit: "1.5mb" }));
 app.use(upload().fields([{ name: "photo", maxCount: 1 }]));
 
-app.use(cors({
-  origin: '*', // Replace '*' with your app's origin to be more secure
-  methods: "GET, POST, PUT, DELETE, OPTIONS",
-  allowedHeaders: "Content-Type, Authorization"
-}));
+app.use(
+  cors({
+    origin: "*", // Replace '*' with your app's origin to be more secure
+    methods: "GET, POST, PUT, DELETE, OPTIONS",
+    allowedHeaders: "Content-Type, Authorization",
+  })
+);
 
 app.get("/", (_req, res) => {
   res.send("Welcome to Davane TQR API");
 });
 app.use("/auth", authRouter);
 app.use("/store", storeRouter);
+app.use("/images", imageRouter);
 
 app.use(verifyToken2);
 app.use("/profile", profileRouter);

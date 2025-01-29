@@ -5,8 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node index.js",
-    "startDev": "nodemon --env-file=.env index.js"
+    "start": "node index.js"
   },
   "author": "Ossa",
   "license": "ISC",

@@ -17,11 +17,12 @@ const app = express();
 
 app.use(json());
 app.use(urlencoded({ extended: false, limit: "1.5mb" }));
-app.use(upload().fields([{ name: "photo", maxCount: 1 }]));
+
+app.use("/images", imageRouter);
 
 app.use(
   cors({
-    origin: "*", // Replace '*' with your app's origin to be more secure
+    origin: "*",
     methods: "GET, POST, PUT, DELETE, OPTIONS",
     allowedHeaders: "Content-Type, Authorization",
   })
@@ -32,7 +33,6 @@ app.get("/", (_req, res) => {
 });
 app.use("/auth", authRouter);
 app.use("/store", storeRouter);
-app.use("/images", imageRouter);
 
 app.use(verifyToken2);
 app.use("/profile", profileRouter);

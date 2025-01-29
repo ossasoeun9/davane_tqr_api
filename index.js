@@ -11,14 +11,12 @@ import ingredientRouter from "./routes/ingredient-route.js";
 import supplierRouter from "./routes/supplier-route.js";
 import productRouter from "./routes/product-route.js";
 import qrCodeRouter from "./routes/qr-code-route.js";
-import imageRouter from "./routes/image-router.js";
 
 const app = express();
 
 app.use(json());
 app.use(urlencoded({ extended: false, limit: "1.5mb" }));
-
-app.use("/images", imageRouter);
+app.use(upload().fields([{ name: "photo", maxCount: 1 }]));
 
 app.use(
   cors({

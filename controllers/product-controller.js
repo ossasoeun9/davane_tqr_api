@@ -118,7 +118,7 @@ const getProductDetail = async (req, res) => {
 // Create a new product
 const createProduct = async (req, res) => {
   try {
-    const {
+    var {
       nameEn,
       nameKh,
       extId,
@@ -154,6 +154,11 @@ const createProduct = async (req, res) => {
       userId,
     });
 
+
+    console.log(typeof(ingredients))
+    if (ingredients && !Array.isArray(ingredients)) {
+      ingredients = JSON.parse(ingredients)
+    }
     if (ingredients && ingredients.length > 0) {
       const ingredientPromises = ingredients.map((ingredientId) =>
         ProductIngredient.create({ productId: newProduct.id, ingredientId })
@@ -161,6 +166,9 @@ const createProduct = async (req, res) => {
       await Promise.all(ingredientPromises);
     }
 
+    if (certificates && !Array.isArray(certificates)) {
+      certificates = JSON.parse(certificates)
+    }
     if (certificates && certificates.length > 0) {
       const certificatePromises = certificates.map((certificateId) =>
         ProductCertificate.create({
@@ -196,7 +204,7 @@ const createProduct = async (req, res) => {
 const editProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    const {
+    var {
       nameEn,
       nameKh,
       extId,
@@ -221,6 +229,9 @@ const editProduct = async (req, res) => {
     product.price = price || product.price;
     product.note = note;
 
+    if (certificates && !Array.isArray(certificates)) {
+      ingredients = JSON.parse(ingredients)
+    }
     if (ingredients && ingredients.length > 0) {
       await ProductIngredient.destroy({ where: { productId: id } });
       const ingredientPromises = ingredients.map((ingredientId) =>
@@ -231,6 +242,9 @@ const editProduct = async (req, res) => {
       await ProductIngredient.destroy({ where: { ProductId: id } });
     }
 
+    if (certificates && !Array.isArray(certificates)) {
+      certificates = JSON.parse(certificates)
+    }
     if (certificates && certificates.length > 0) {
       await ProductCertificate.destroy({ where: { productId: id } });
       const certificatePromises = certificates.map((certificateId) =>

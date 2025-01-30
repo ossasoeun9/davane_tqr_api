@@ -15,7 +15,7 @@ import qrCodeRouter from "./routes/qr-code-route.js";
 const app = express();
 
 app.use(json());
-app.use(urlencoded({ extended: false, limit: "1.5mb" }));
+app.use(urlencoded({ extended: true, limit: "1.5mb" }));
 app.use(upload().fields([{ name: "photo", maxCount: 1 }]));
 
 app.use(
@@ -25,6 +25,12 @@ app.use(
     allowedHeaders: "Content-Type, Authorization",
   })
 );
+
+app.use((req, res, next) => {
+  console.log(req.files);
+  console.log(req.body);
+  next();
+});
 
 app.get("/", (_req, res) => {
   res.send("Welcome to Davane TQR API");

@@ -3,11 +3,8 @@ import { Category, Product } from "../models/index.js";
 const getCategories = async (req, res) => {
   try {
     const categories = await Category.findAll({
-      where: {
-        storeId: req.user.store.id,
-      },
       attributes: {
-        exclude: ["userId", "storeId", "createdAt", "updatedAt"],
+        exclude: ["createdAt", "updatedAt"],
       },
       order: [['createdAt', 'DESC']],
     });

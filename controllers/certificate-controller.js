@@ -24,7 +24,7 @@ const getCertificates = async (req, res) => {
 
 const createCertificate = async (req, res) => {
   try {
-    const { title, issuedDate, expireDate, issuingIstitution, note } = req.body;
+    const { title, issuedDate, expireDate, issuingIstitution, standard, note } = req.body;
     const { photo } = req.files;
 
     if (!title || !issuedDate || !photo) {
@@ -54,6 +54,7 @@ const createCertificate = async (req, res) => {
       note,
       userId: req.user.id,
       issuingIstitution,
+      standard,
       storeId: req.user.store.id,
     });
 
@@ -66,7 +67,7 @@ const createCertificate = async (req, res) => {
 
 const editCertificate = async (req, res) => {
   try {
-    const { title, issuedDate, expireDate, issuingIstitution, note } = req.body;
+    const { title, issuedDate, expireDate, issuingIstitution, standard, note } = req.body;
     const { photo } = req.files;
     const { id } = req.params;
     if (!id) {
@@ -83,6 +84,9 @@ const editCertificate = async (req, res) => {
     }
     if (issuedDate) {
       data.issuedDate = issuedDate;
+    }
+    if (standard) {
+      data.standard = standard
     }
 
     if (photo) {

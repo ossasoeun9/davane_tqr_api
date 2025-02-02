@@ -18,10 +18,10 @@ export default (sequelize, DataTypes) => {
         foreignKey: "userId",
         as: "certificates",
       });
-      User.hasMany(Category, {
-        foreignKey: "userId",
-        as: "categories",
-      });
+      // User.hasMany(Category, {
+      //   foreignKey: "userId",
+      //   as: "categories",
+      // });
       User.hasMany(Supplier, {
         foreignKey: "userId",
         as: "suppliers",

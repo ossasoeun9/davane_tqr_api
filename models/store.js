@@ -18,10 +18,10 @@ export default (sequelize, DataTypes) => {
         foreignKey: "storeId",
         as: "certificates",
       });
-      Store.hasMany(Category, {
-        foreignKey: "storeId",
-        as: "categories",
-      });
+      // Store.hasMany(Category, {
+      //   foreignKey: "storeId",
+      //   as: "categories",
+      // });
       Store.hasMany(Supplier, {
         foreignKey: "storeId",
         as: "suppliers",

@@ -1,4 +1,12 @@
-import { Product, Ingredient, Certificate, ProductCertificate, ProductIngredient, QrCode, Category } from "../models/index.js";
+import {
+  Product,
+  Ingredient,
+  Certificate,
+  ProductCertificate,
+  ProductIngredient,
+  QrCode,
+  Category,
+} from "../models/index.js";
 import uploadBuffer from "../core/gcp/upload-buffer.js";
 import bucket from "../core/gcp/gcp-storage-bucket.js";
 import { Op } from "@sequelize/core";
@@ -33,15 +41,15 @@ const getProducts = async (req, res) => {
           "categoryId",
         ],
       },
-      order: [['createdAt', 'DESC']],
+      order: [["createdAt", "DESC"]],
       include: [
         {
           model: Category,
           as: "category",
           attributes: {
-            exclude: ["userId", "storeId", "createdAt", "updatedAt"],
+            exclude: ["createdAt", "updatedAt"],
           },
-          order: [['createdAt', 'DESC']],
+          // order: [["createdAt", "DESC"]],
         },
       ],
     });
@@ -72,7 +80,7 @@ const getProductDetail = async (req, res) => {
           model: Category,
           as: "category",
           attributes: {
-            exclude: ["userId", "storeId", "createdAt", "updatedAt"],
+            exclude: ["createdAt", "updatedAt"],
           },
         },
         // {
@@ -127,6 +135,7 @@ const createProduct = async (req, res) => {
       description,
       unit,
       price,
+      cookingGuideLine,
       note,
       ingredientsNote,
       certificates,
@@ -151,11 +160,11 @@ const createProduct = async (req, res) => {
       unit,
       price,
       note,
+      cookingGuideLine,
       ingredientsNote,
       storeId,
       userId,
     });
-
 
     // console.log(typeof(ingredients))
     // if (ingredients && !Array.isArray(ingredients)) {
@@ -169,7 +178,7 @@ const createProduct = async (req, res) => {
     // }
 
     if (certificates && !Array.isArray(certificates)) {
-      certificates = JSON.parse(certificates)
+      certificates = JSON.parse(certificates);
     }
     if (certificates && certificates.length > 0) {
       const certificatePromises = certificates.map((certificateId) =>
@@ -215,6 +224,7 @@ const editProduct = async (req, res) => {
       unit,
       price,
       note,
+      cookingGuideLine,
       ingredientsNote,
       certificates,
     } = req.body;
@@ -230,7 +240,8 @@ const editProduct = async (req, res) => {
     product.unit = unit || product.unit;
     product.price = price || product.price;
     product.note = note;
-    product.ingredientsNote = ingredientsNote
+    product.ingredientsNote = ingredientsNote;
+    product.cookingGuideLine = cookingGuideLine;
 
     // if (certificates && !Array.isArray(certificates)) {
     //   ingredients = JSON.parse(ingredients)
@@ -246,7 +257,7 @@ const editProduct = async (req, res) => {
     // }
 
     if (certificates && !Array.isArray(certificates)) {
-      certificates = JSON.parse(certificates)
+      certificates = JSON.parse(certificates);
     }
     if (certificates && certificates.length > 0) {
       await ProductCertificate.destroy({ where: { productId: id } });
@@ -273,7 +284,7 @@ const editProduct = async (req, res) => {
       if (isUploaded) {
         product.photo = path;
       } else {
-        delete product.photo
+        delete product.photo;
       }
     }
 

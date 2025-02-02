@@ -13,14 +13,14 @@ export default (sequelize, DataTypes) => {
         foreignKey: "categoryId",
         as: "products",
       });
-      Category.belongsTo(Store, {
-        foreignKey: "storeId",
-        as: "store",
-      });
-      Category.belongsTo(User, {
-        foreignKey: "userId",
-        as: "user",
-      });
+      // Category.belongsTo(Store, {
+      //   foreignKey: "storeId",
+      //   as: "store",
+      // });
+      // Category.belongsTo(User, {
+      //   foreignKey: "userId",
+      //   as: "user",
+      // });
     }
   }
   Category.init(

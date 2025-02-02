@@ -36,6 +36,7 @@ export default (sequelize, DataTypes) => {
       issuedDate: DataTypes.DATE,
       expireDate: DataTypes.DATE,
       photo: DataTypes.STRING,
+      standard: DataTypes.STRING,
       note: DataTypes.STRING,
     },
     {

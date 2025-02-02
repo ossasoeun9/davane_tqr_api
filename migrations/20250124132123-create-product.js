@@ -45,6 +45,9 @@ export async function up(queryInterface, Sequelize) {
     ingredientsNote: {
       type: Sequelize.STRING(500),  
     },
+    cookingGuideLine: {
+      type: Sequelize.STRING(1000),  
+    },
     note: {
       type: Sequelize.STRING(500),
     },

@@ -1,4 +1,7 @@
 'use strict';
+
+import { Ingredient } from '../models';
+
 /** @type {import('sequelize-cli').Migration} */
 export async function up(queryInterface, Sequelize) {
   await queryInterface.createTable('Certificates', {
@@ -11,6 +14,10 @@ export async function up(queryInterface, Sequelize) {
     },
     title: {
       type: Sequelize.STRING(100),
+      allowNull: false
+    },
+    standard: {
+      type: Sequelize.INTEGER,
       allowNull: false
     },
     issuingIstitution: {

@@ -41,9 +41,21 @@ const getQrCodes = async (req, res) => {
               "updatedAt",
               "description",
               "note",
+              "ingredientsNote",
               "categoryId",
             ],
           },
+          include: {
+            model: Category,
+            attributes: {
+              exclude: [
+                "userId",
+                "storeId",
+                "createdAt",
+                "updatedAt",
+              ],
+            },
+          }
         },
         {
           model: Supplier,
@@ -105,20 +117,20 @@ const getQrCodeDetail = async (req, res) => {
                 exclude: ["userId", "storeId", "createdAt", "updatedAt"],
               },
             },
-            {
-              model: Ingredient,
-              as: "ingredients",
-              through: { attributes: [] },
-              attributes: {
-                exclude: [
-                  "userId",
-                  "storeId",
-                  "createdAt",
-                  "updatedAt",
-                  "ProductHasIngredient",
-                ],
-              },
-            },
+            // {
+            //   model: Ingredient,
+            //   as: "ingredients",
+            //   through: { attributes: [] },
+            //   attributes: {
+            //     exclude: [
+            //       "userId",
+            //       "storeId",
+            //       "createdAt",
+            //       "updatedAt",
+            //       "ProductHasIngredient",
+            //     ],
+            //   },
+            // },
             {
               model: Certificate,
               as: "certificates",

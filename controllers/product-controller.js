@@ -128,7 +128,7 @@ const createProduct = async (req, res) => {
       unit,
       price,
       note,
-      ingredientNote,
+      ingredientsNote,
       certificates,
     } = req.body;
 
@@ -151,7 +151,7 @@ const createProduct = async (req, res) => {
       unit,
       price,
       note,
-      ingredientNote,
+      ingredientsNote,
       storeId,
       userId,
     });
@@ -215,7 +215,7 @@ const editProduct = async (req, res) => {
       unit,
       price,
       note,
-      ingredientNote,
+      ingredientsNote,
       certificates,
     } = req.body;
     const product = await Product.findByPk(id);
@@ -230,7 +230,7 @@ const editProduct = async (req, res) => {
     product.unit = unit || product.unit;
     product.price = price || product.price;
     product.note = note;
-    product.ingredientNote = ingredientNote
+    product.ingredientsNote = ingredientsNote
 
     // if (certificates && !Array.isArray(certificates)) {
     //   ingredients = JSON.parse(ingredients)

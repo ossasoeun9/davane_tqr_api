@@ -26,12 +26,6 @@ app.use(
   })
 );
 
-app.use((req, res, next) => {
-  console.log(req.files);
-  console.log(req.body);
-  next();
-});
-
 app.get("/", (_req, res) => {
   res.send("Welcome to Davane TQR API");
 });
@@ -41,7 +35,7 @@ app.use("/store", storeRouter);
 app.use(verifyToken2);
 app.use("/profile", profileRouter);
 app.use("/category", categoryRouter);
-app.use("/ingredient", ingredientRouter);
+// app.use("/ingredient", ingredientRouter);
 app.use("/supplier", supplierRouter);
 app.use("/product", productRouter);
 app.use("/qr_code", qrCodeRouter);

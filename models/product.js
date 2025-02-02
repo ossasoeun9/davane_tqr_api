@@ -57,6 +57,7 @@ export default (sequelize, DataTypes) => {
       photo: DataTypes.STRING,
       description: DataTypes.STRING,
       unit: DataTypes.INTEGER,
+      ingredientsNote: DataTypes.STRING,
       price: DataTypes.DOUBLE,
       note: DataTypes.STRING,
     },

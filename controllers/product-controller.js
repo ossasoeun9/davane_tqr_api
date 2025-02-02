@@ -29,6 +29,7 @@ const getProducts = async (req, res) => {
           "updatedAt",
           "description",
           "note",
+          "ingredientsNote",
           "categoryId",
         ],
       },
@@ -74,19 +75,19 @@ const getProductDetail = async (req, res) => {
             exclude: ["userId", "storeId", "createdAt", "updatedAt"],
           },
         },
-        {
-          model: Ingredient,
-          as: "ingredients",
-          through: { attributes: [] },
-          attributes: {
-            exclude: [
-              "userId",
-              "storeId",
-              "createdAt",
-              "updatedAt",
-            ],
-          },
-        },
+        // {
+        //   model: Ingredient,
+        //   as: "ingredients",
+        //   through: { attributes: [] },
+        //   attributes: {
+        //     exclude: [
+        //       "userId",
+        //       "storeId",
+        //       "createdAt",
+        //       "updatedAt",
+        //     ],
+        //   },
+        // },
         {
           model: Certificate,
           as: "certificates",
@@ -127,7 +128,7 @@ const createProduct = async (req, res) => {
       unit,
       price,
       note,
-      ingredients,
+      ingredientNote,
       certificates,
     } = req.body;
 
@@ -150,21 +151,22 @@ const createProduct = async (req, res) => {
       unit,
       price,
       note,
+      ingredientNote,
       storeId,
       userId,
     });
 
 
-    console.log(typeof(ingredients))
-    if (ingredients && !Array.isArray(ingredients)) {
-      ingredients = JSON.parse(ingredients)
-    }
-    if (ingredients && ingredients.length > 0) {
-      const ingredientPromises = ingredients.map((ingredientId) =>
-        ProductIngredient.create({ productId: newProduct.id, ingredientId })
-      );
-      await Promise.all(ingredientPromises);
-    }
+    // console.log(typeof(ingredients))
+    // if (ingredients && !Array.isArray(ingredients)) {
+    //   ingredients = JSON.parse(ingredients)
+    // }
+    // if (ingredients && ingredients.length > 0) {
+    //   const ingredientPromises = ingredients.map((ingredientId) =>
+    //     ProductIngredient.create({ productId: newProduct.id, ingredientId })
+    //   );
+    //   await Promise.all(ingredientPromises);
+    // }
 
     if (certificates && !Array.isArray(certificates)) {
       certificates = JSON.parse(certificates)
@@ -213,7 +215,7 @@ const editProduct = async (req, res) => {
       unit,
       price,
       note,
-      ingredients,
+      ingredientNote,
       certificates,
     } = req.body;
     const product = await Product.findByPk(id);
@@ -228,19 +230,20 @@ const editProduct = async (req, res) => {
     product.unit = unit || product.unit;
     product.price = price || product.price;
     product.note = note;
+    product.ingredientNote = ingredientNote
 
-    if (certificates && !Array.isArray(certificates)) {
-      ingredients = JSON.parse(ingredients)
-    }
-    if (ingredients && ingredients.length > 0) {
-      await ProductIngredient.destroy({ where: { productId: id } });
-      const ingredientPromises = ingredients.map((ingredientId) =>
-        ProductIngredient.create({ productId: id, ingredientId })
-      );
-      await Promise.all(ingredientPromises);
-    } else {
-      await ProductIngredient.destroy({ where: { ProductId: id } });
-    }
+    // if (certificates && !Array.isArray(certificates)) {
+    //   ingredients = JSON.parse(ingredients)
+    // }
+    // if (ingredients && ingredients.length > 0) {
+    //   await ProductIngredient.destroy({ where: { productId: id } });
+    //   const ingredientPromises = ingredients.map((ingredientId) =>
+    //     ProductIngredient.create({ productId: id, ingredientId })
+    //   );
+    //   await Promise.all(ingredientPromises);
+    // } else {
+    //   await ProductIngredient.destroy({ where: { ProductId: id } });
+    // }
 
     if (certificates && !Array.isArray(certificates)) {
       certificates = JSON.parse(certificates)
@@ -295,7 +298,7 @@ const deleteProduct = async (req, res) => {
     }
     await QrCode.destroy({ where: { productId: id } });
     await ProductCertificate.destroy({ where: { productId: id } });
-    await ProductIngredient.destroy({ where: { productId: id } });
+    // await ProductIngredient.destroy({ where: { productId: id } });
     await product.destroy();
     return res.status(200).json({ message: "Product deleted successfully" });
   } catch (error) {

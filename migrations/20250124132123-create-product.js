@@ -42,6 +42,9 @@ export async function up(queryInterface, Sequelize) {
       type: Sequelize.DOUBLE,
       allowNull: false,
     },
+    ingredientsNote: {
+      type: Sequelize.STRING(500),  
+    },
     note: {
       type: Sequelize.STRING(500),
     },

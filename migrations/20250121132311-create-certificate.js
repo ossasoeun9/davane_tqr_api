@@ -12,6 +12,12 @@ export async function up(queryInterface, Sequelize) {
       defaultValue: Sequelize.UUIDV4,
       unique: true,
     },
+    number: {
+      type: Sequelize.STRING(80),
+    },
+    type: {
+      type: Sequelize.STRING(80),
+    },
     title: {
       type: Sequelize.STRING(100),
       allowNull: false

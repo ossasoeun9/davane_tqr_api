@@ -32,6 +32,8 @@ export default (sequelize, DataTypes) => {
         primaryKey: true,
       },
       title: DataTypes.STRING,
+      number: DataTypes.STRING,
+      type: DataTypes.STRING,
       IssuingIstitution: DataTypes.STRING,
       issuedDate: DataTypes.DATE,
       expireDate: DataTypes.DATE,

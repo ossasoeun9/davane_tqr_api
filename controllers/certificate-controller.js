@@ -24,7 +24,16 @@ const getCertificates = async (req, res) => {
 
 const createCertificate = async (req, res) => {
   try {
-    const { title, issuedDate, expireDate, issuingIstitution, standard, note } = req.body;
+    const {
+      title,
+      number,
+      type,
+      issuedDate,
+      expireDate,
+      issuingIstitution,
+      standard,
+      note,
+    } = req.body;
     const { photo } = req.files;
 
     if (!title || !issuedDate || !photo) {
@@ -48,6 +57,8 @@ const createCertificate = async (req, res) => {
 
     const certificate = await Certificate.create({
       title,
+      number,
+      type,
       issuedDate,
       expireDate,
       photo: path,
@@ -67,7 +78,16 @@ const createCertificate = async (req, res) => {
 
 const editCertificate = async (req, res) => {
   try {
-    const { title, issuedDate, expireDate, issuingIstitution, standard, note } = req.body;
+    const {
+      title,
+      number,
+      type,
+      issuedDate,
+      expireDate,
+      issuingIstitution,
+      standard,
+      note,
+    } = req.body;
     const { photo } = req.files;
     const { id } = req.params;
     if (!id) {
@@ -78,7 +98,7 @@ const editCertificate = async (req, res) => {
       return res.status(404).json({ message: "Certificate not found" });
     }
 
-    const data = { expireDate, issuingIstitution, note };
+    const data = { number, type, expireDate, issuingIstitution, note };
     if (title) {
       data.title = title;
     }
@@ -86,7 +106,7 @@ const editCertificate = async (req, res) => {
       data.issuedDate = issuedDate;
     }
     if (standard) {
-      data.standard = standard
+      data.standard = standard;
     }
 
     if (photo) {

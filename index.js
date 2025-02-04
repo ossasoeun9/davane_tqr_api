@@ -31,6 +31,7 @@ app.get("/", (_req, res) => {
 });
 app.use("/auth", authRouter);
 app.use("/store", storeRouter);
+app.use("/qr_code", qrCodeRouter);
 
 app.use(verifyToken2);
 app.use("/profile", profileRouter);
@@ -38,7 +39,6 @@ app.use("/category", categoryRouter);
 // app.use("/ingredient", ingredientRouter);
 app.use("/supplier", supplierRouter);
 app.use("/product", productRouter);
-app.use("/qr_code", qrCodeRouter);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {

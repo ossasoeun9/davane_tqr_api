@@ -32,9 +32,9 @@ app.get("/", (_req, res) => {
 app.use("/auth", authRouter);
 app.use("/store", storeRouter);
 app.use("/qr_code", qrCodeRouter);
+app.use("/profile", profileRouter);
 
 app.use(verifyToken2);
-app.use("/profile", profileRouter);
 app.use("/category", categoryRouter);
 // app.use("/ingredient", ingredientRouter);
 app.use("/supplier", supplierRouter);

@@ -34,7 +34,7 @@ export default (sequelize, DataTypes) => {
       title: DataTypes.STRING,
       number: DataTypes.STRING,
       type: DataTypes.STRING,
-      IssuingIstitution: DataTypes.STRING,
+      issuer: DataTypes.STRING,
       issuedDate: DataTypes.DATE,
       expireDate: DataTypes.DATE,
       photo: DataTypes.STRING,

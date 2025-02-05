@@ -26,7 +26,7 @@ export async function up(queryInterface, Sequelize) {
       type: Sequelize.INTEGER,
       allowNull: false
     },
-    issuingIstitution: {
+    issuer: {
       type: Sequelize.STRING(250)
     },
     issuedDate: {

@@ -56,7 +56,6 @@ const editProfile = async (req, res) => {
         delete user.photo
       }
     }
-
     await user.save()
     return res.status(200).json(user);
   } catch (error) {

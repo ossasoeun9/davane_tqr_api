@@ -30,7 +30,7 @@ const createCertificate = async (req, res) => {
       type,
       issuedDate,
       expireDate,
-      issuingIstitution,
+      issuer,
       standard,
       note,
     } = req.body;
@@ -64,7 +64,7 @@ const createCertificate = async (req, res) => {
       photo: path,
       note,
       userId: req.user.id,
-      issuingIstitution,
+      issuer,
       standard,
       storeId: req.user.store.id,
     });
@@ -84,7 +84,7 @@ const editCertificate = async (req, res) => {
       type,
       issuedDate,
       expireDate,
-      issuingIstitution,
+      issuer,
       standard,
       note,
     } = req.body;
@@ -98,7 +98,7 @@ const editCertificate = async (req, res) => {
       return res.status(404).json({ message: "Certificate not found" });
     }
 
-    const data = { number, type, expireDate, issuingIstitution, note };
+    const data = { number, type, expireDate, issuer, note };
     if (title) {
       data.title = title;
     }
